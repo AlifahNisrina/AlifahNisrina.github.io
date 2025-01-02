@@ -1,0 +1,130 @@
+---
+title: "Pengaruh Tarif Impor terhadap Volume Impor Produk Elektronik di Indonesia (2018-2023)"
+subtitle: "Metode Penelitian Politeknik APP Jakarta"
+author: "Alifah Nisrina Salsabila"
+date: 2025-01-02
+number-sections: true
+
+project:
+  type: website
+  output-dir: docs
+
+format:
+  html: default
+---
+
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
+
+![Logo](logo.jpeg)
+
+## Pendahuluan
+
+### Latar Belakang
+
+Perdagangan internasional merupakan salah satu pilar penting dalam perekonomian suatu negara, termasuk Indonesia. Dalam beberapa tahun terakhir, sektor elektronik telah menjadi salah satu komoditas utama yang diimpor oleh Indonesia. Produk elektronik, seperti smartphone, televisi, dan peralatan rumah tangga, memiliki permintaan yang tinggi di pasar domestik (Kementerian Perdagangan, 2023). Namun, kebijakan tarif impor yang diterapkan oleh pemerintah dapat mempengaruhi volume impor produk tersebut. Oleh karena itu, penting untuk menganalisis pengaruh tarif impor terhadap volume impor produk elektronik di Indonesia dalam periode 2018-2023.
+
+### Ruang Lingkup
+
+Penelitian ini akan membahas pengaruh tarif impor terhadap volume impor produk elektronik di Indonesia selama periode 2018 hingga 2023. Fokus utama penelitian ini adalah pada produk elektronik yang diimpor, termasuk smartphone, televisi, dan peralatan rumah tangga.
+
+### Rumusan Masalah
+
+1.  Apakah terdapat pengaruh tarif impor terhadap volume impor produk elektronik di Indonesia?
+2.  Seberapa besar pengaruh tarif impor terhadap volume impor produk elektronik di Indonesia?
+
+### Tujuan dan Manfaat Penelitian
+
+Tujuan penelitian ini adalah untuk mengetahui pengaruh tarif impor terhadap volume impor produk elektronik di Indonesia selama periode 2018-2023.
+
+Manfaat penelitian ini adalah agar masyarakat, pelaku industri, dan pembuat kebijakan memahami bahwa tarif impor memiliki pengaruh signifikan terhadap volume impor produk elektronik di Indonesia, serta memberikan informasi yang berguna dalam merumuskan kebijakan tarif impor yang lebih efektif.
+
+### Package
+
+```{r}
+#| warning: false
+#| echo: true
+library(tidyverse)
+library(readxl)
+```
+
+## Studi pustaka
+
+Berdasarkan Laporan Realisasi Ekspor-Impor Perangkat Teknologi Informasi dan Komunikasi Indonesia (2023) oleh Kementerian Perdagangan, volume impor perangkat teknologi informasi dan komunikasi (TIK) Indonesia menunjukkan tren fluktuasi pada periode 2018--2023. Total impor mencapai puncaknya pada tahun 2022 dengan USD 8,54 miliar, sebelum mengalami penurunan sebesar -2,37% pada semester pertama 2023 menjadi USD 4,16 miliar. Barang modal mendominasi struktur impor perangkat TIK, mencapai 91,15% pada Januari--Juni 2023, dengan produk utama seperti ponsel, perangkat komunikasi, dan laptop. Data ini mengindikasikan bahwa perubahan kebijakan tarif impor dapat berdampak signifikan terhadap volume impor perangkat elektronik, yang menjadi bagian besar dari perdagangan Indonesia.
+
+## Metode Penelitian
+
+### Data
+
+Data yang digunakan adalah data impor mesin perlengkapan elektrik dan bagiannya menurut negara asal utama dari tahun 2018 hingga 2023 yang bersumber dari Badan Pusat Statistik (BPS).
+
+![Data](data.jpg)
+
+### Metode Analisis
+
+Metode yang dipilih adalah regresi univariat atau Ordinary Least Square (OLS) dengan 1 variabel independen. Penelitian ini bertujuan untuk mencari hubungan antara volume impor dan tarif impor. Spesifikasi yang dilakukan adalah:
+
+$$
+y_{t}=\beta_0 + \beta_1 x_t+\mu_t
+$$ di mana $y_t$ adalah volume impor dan $x_t$ adalah tarif impor.
+
+## Pembahasan
+
+### Pembahasan Masalah
+
+
+```{r}
+data <- read_excel("Impor Mesin_Perlengkapan Elektrik dan Bagiannya Menurut Negara Asal Utama, 2018-2023.xlsx")
+
+data
+```
+
+```{r}
+ggplot(data = data, aes(x = `Tarif Impor`, y = `Volume Impor`)) +
+  geom_point(color = "blue", size = 2) + # Titik scatter biru
+  labs(
+    title = "Hubungan Tarif Impor dan Volume Impor Produk Elektronik",
+    x = "Tarif Impor",
+    y = "Volume Impor",
+    caption = "Sumber: Badan Pusat Statistik Indonesia"
+  ) + theme_classic()
+```
+
+### Analisis Masalah
+
+Berdasarkan metode penelitian dan data yang telah diperoleh, dilakukan analisis sebagai berikut.
+
+```{r}
+# Hitung total Volume Impor dan Tarif Impor per tahun
+data_total <- data %>%
+  group_by(Tahun) %>%
+  summarise(
+    Total_Volume_Impor = sum(`Volume Impor`, na.rm = TRUE),
+    Total_Tarif_Impor = sum(`Tarif Impor`, na.rm = TRUE)
+  )
+
+# Regresi linier sederhana dengan total data
+model <- lm(Total_Volume_Impor ~ Total_Tarif_Impor, data = data_total)
+
+# Ringkasan model
+summary(model)
+```
+
+Hasil analisis regresi menunjukkan bahwa terdapat pengaruh positif yang signifikan antara tarif impor dan volume impor produk elektronik di Indonesia. Dengan nilai p-value = 0.00115, hubungan ini signifikan secara statistik, menunjukkan bahwa kenaikan tarif impor sebesar 1 unit meningkatkan volume impor sebesar 0.06778 unit. Model ini juga memiliki $R^2$ sebesar 94.51%, yang berarti 94.51% variasi dalam volume impor dapat dijelaskan oleh tarif impor.
+
+## Kesimpulan
+
+Diperoleh bahwa tarif impor memiliki pengaruh positif yang signifikan terhadap volume impor produk elektronik di Indonesia. Hal ini berarti peningkatan tarif impor akan mengakibatkan volume impor yang ikut meningkat. 
+
+## Saran
+
+Untuk meningkatkan akurasi dari penelitian dan mengetahui faktor lain yang dapat mempengaruhi volume impor, disarankan untuk menambahkan variabel independen yang lain.
+
+## Referensi
+
+Badan Pusat Statistik Indonesia. (8 September 2014). _Impor Mesin/Perlengkapan Elektrik dan Bagiannya Menurut Negara Asal Utama, 2018-2023_. Diakses pada 2 Januari 2025, dari https://www.bps.go.id/id/statistics-table/1/MTA1MCMx/impor-mesin-perlengkapan-elektrik-dan-bagiannya-menurut-negara-asal-utama--2018-2023.html
+
+Kementerian Perdagangan. (2023). _Realisasi Ekspor-Impor Perangkat Teknologi Informasi dan Komunikasi Indonesia Periode 2018-2023_. Jakarta: Kementerian Perdagangan Republik Indonesia.
